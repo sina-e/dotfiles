@@ -1,0 +1,17 @@
+rofi.lines: 5
+rofi.eh: 2
+rofi.location: 2
+rofi.width: 50
+!rofi.padding: 350
+!rofi.fullscreen: true
+rofi.opacity: 85
+rofi.bw: 0
+rofi.separator-style: none
+rofi.hide-scrollbar: true
+rofi.show-icons: true
+
+!                  'background',  'border',      'separator'
+rofi.color-window: argb:EE222222, argb:EE000000, argb:EE000000
+!State:            'bg',           'fg',    'bgalt',       'hlbg',  'hlfg'
+rofi.color-normal: argb:00000000, #f3f4f5, argb:00000000, #2f343f, #9575cd
+rofi.font: Vazir 12
