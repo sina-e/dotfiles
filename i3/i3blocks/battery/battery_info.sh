@@ -22,10 +22,12 @@ then
     # Print full text. The charging data.
     TIME_LEFT=$(echo $TIME_LEFT | awk '{ printf("%s\n", substr($1, 0, 5)) }')
     ICON=🔋
-    if [ "$IS_CHARGING" = "Charging"]
+
+    if [ "$IS_CHARGING" = "Charging" ]
     then
-	    ICON=🔌
+    	ICON=⚡️
     fi
+
     echo "$ICON $BAT_LEVEL ⏳$TIME_LEFT "
 
     # Print the short text.

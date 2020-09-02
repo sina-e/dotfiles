@@ -9,7 +9,7 @@ effect=(-resize 30% -define "filter:sigma=1" -resize 250%)
 font=$(convert -list font | awk "{ a[NR] = \$2 } /family: $(fc-match sans -f "%{family}\n")/ { print a[NR-1]; exit }")
 image=$(mktemp --suffix=.png)
 desktop=""
-i3lock_cmd=(i3lock -i "$image")
+i3lock_cmd=(i3lock -t -i "$image")
 shot_custom=false
 
 cp ~/Pictures/lock-screen.png $image

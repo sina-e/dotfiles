@@ -24,7 +24,7 @@ color=#FEC925
 
 [SOUND_BURST]
 command=~/.config/i3blocks/sound/sound_burst.sh
-interval=1
+interval=60
 
 [SOUND]
 full_text= 🔇:  0%  | 🔆:  0%
