@@ -30,13 +30,14 @@ exec --no-startup-id nm-applet
 ## i3bar refresher
 #set $refresh_i3status killall -SIGUSR1 i3status
 set $refresh_i3status ~/.config/i3blocks/sound/sound_burst.sh
+set $vol_notif ~/.config/i3/vol_not.sh
 
 # Use pactl to adjust volume in PulseAudio.
 
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status && $vol_notif
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status && $vol_notif
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status && $vol_notif
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status && $vol_notif
 
 # # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10 && $refresh_i3status # increase screen brightness
@@ -165,7 +166,7 @@ bindsym $mod+Shift+F9 exec $locker && systemctl suspend
 
 # Configure screens to be locked after 15mins of inactivity
 exec --no-startup-id xset dpms 600
-exec --no-startup-id xautolock -detectsleep -time 10 -locker $locker -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds'"
+exec --no-startup-id xautolock -detectsleep -time 10 -locker $locker -notify 30 -notifier "notify-send -u critical -t 5000 -- 'LOCKING screen in 30 seconds'"
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
@@ -289,6 +290,8 @@ exec spotify
 # Change keyboard layout
 #bindsym Mod1+shift exec --no-startup-id ~/.config/i3/i3-keyboard-layout cycle us ir
 exec --no-startup-id "setxkbmap -layout us,ir -option grp:alt_shift_toggle"
+# setup kbdd for per-window keyboard layout
+exec kbdd
 
 # Clipboard
 exec --no-startup-id "xfce4-clipman"
