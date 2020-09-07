@@ -155,11 +155,20 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 
+# Display and monitor configuration
+set $one-monitor xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x768 --rotate normal --output HDMI1 --mode 1366x768 --pos 554x0 --rotate normal --output VIRTUAL1 --off
+
+set $two-monitor xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI1 --off --output VIRTUAL1 --off
+
+exec_always xrandr | grep 'HDMI1 connected' && $one-monitor
+
+exec_always xrandr | grep 'HDMI1 disconnected' && $two-monitor 
+
 # lock i3
-set $locker ~/.config/i3/i3lock-fancy.sh
+set $locker ~/.config/i3/i3lock-fancy.sh 
 
 # Lock
-bindsym $mod+F9 exec $locker
+bindsym $mod+F9 exec $one-monitor && $locker
 
 # Suspend 
 bindsym $mod+Shift+F9 exec $locker && systemctl suspend
@@ -171,11 +180,6 @@ exec --no-startup-id xautolock -detectsleep -time 10 -locker $locker -notify 30 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- $locker 
-
-# Display and monitor configuration
-exec_always xrandr | grep 'HDMI1 connected' && xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x768 --rotate normal --output HDMI1 --mode 1366x768 --pos 554x0 --rotate normal --output VIRTUAL1 --off
-
-exec_always xrandr | grep 'HDMI1 disconnected' && xrandr --output eDP1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI1 --off --output VIRTUAL1 --off
 
 ## Assign workspace to monitorls
 workspace $ws1 output eDP1
@@ -278,11 +282,14 @@ exec_always echo \"nameserver 1.1.1.1\" | sudo tee /etc/resolv.conf
 exec_always xcompmgr
 
 # Windows and displays assign
-for_window [class="Spotify"] move to workspace $ws4
-assign [class="firefox"] $ws2
-assign [class="jetbrains-pycharm"] $ws3
-for_window [class="Pavucontrol"] floating enable
-for_window [class="persepolis"] floating enable
+assign [class="firefox"] 		$ws2
+assign [class="jetbrains-pycharm"] 	$ws3
+
+for_window [class="Spotify"] 	move to workspace $ws4
+for_window [class="persepolis"] move to wokspace $ws9
+
+for_window [class="Pavucontrol"] 	floating enable
+for_window [class="persepolis"] 	floating enable
 
 # Apps to execute on startup
 exec spotify
@@ -290,8 +297,9 @@ exec spotify
 # Change keyboard layout
 #bindsym Mod1+shift exec --no-startup-id ~/.config/i3/i3-keyboard-layout cycle us ir
 exec --no-startup-id "setxkbmap -layout us,ir -option grp:alt_shift_toggle"
+
 # setup kbdd for per-window keyboard layout
-exec kbdd
+exec kbdd -n
 
 # Clipboard
 exec --no-startup-id "xfce4-clipman"
@@ -303,3 +311,8 @@ bindsym Print exec --no-startup-id "xfce4-screenshooter -f"
 bindsym $mod+shift+s exec --no-startup-id "xfce4-screenshooter -r -c"
 bindsym $mod+Print exec --no-startup-id "xfce4-screenshooter -f -c"
 bindsym $mod+shift+Print exec --no-startup-id "xfce4-screenshooter"
+
+
+# # Most used Apss shortcuts
+bindsym $mod+t exec --no-startup-id telegram-desktop
+bindsym $mod+b exec --no-startup-id firefox
